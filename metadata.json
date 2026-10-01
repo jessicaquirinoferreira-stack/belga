@@ -1,0 +1,6 @@
+{
+  "name": "Belga Móveis - E-commerce e Crediário Digital",
+  "description": "Sistema completo de vendas, crediário digital, catálogo de móveis e colchões, PDV e gestão financeira da Belga Móveis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

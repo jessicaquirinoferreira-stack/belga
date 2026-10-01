@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes opticalPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1.6);
+  }
+}
+
+@keyframes rayRotate {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-shimmer-sweep {
+  animation: shimmerSweep 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-logo-float {
+  animation: logoFloat 3.5s ease-in-out infinite;
+}
+
+.animate-optical-pulse {
+  animation: opticalPulse 2.5s ease-in-out infinite;
+}
+
+.animate-ray-rotate {
+  animation: rayRotate 30s linear infinite;
+}

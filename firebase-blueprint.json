@@ -1,0 +1,305 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile representation",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["customer", "admin"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Admin identity document",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer personal and address information for Belga Móveis crediário",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "cpf": { "type": "string", "maxLength": 20 },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string", "maxLength": 25 },
+        "whatsapp": { "type": "string", "maxLength": 25 },
+        "birthDate": { "type": "string", "maxLength": 15 },
+        "address": { "type": "object" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["active", "blocked", "pending"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "cpf", "phone", "address"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Furniture and mattress product catalog items",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 150 },
+        "categoryId": { "type": "string" },
+        "categoryName": { "type": "string" },
+        "description": { "type": "string", "maxLength": 3000 },
+        "price": { "type": "number" },
+        "creditPrice": { "type": "number" },
+        "maxInstallments": { "type": "number" },
+        "stock": { "type": "number" },
+        "sku": { "type": "string", "maxLength": 50 },
+        "images": { "type": "array" },
+        "videoUrl": { "type": "string" },
+        "active": { "type": "boolean" },
+        "featured": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "price", "creditPrice", "stock", "active"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product categories",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 100 },
+        "active": { "type": "boolean" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "slug", "active"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Sales order and digital ficha of crediário",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "maxLength": 50 },
+        "fichaNumber": { "type": "string", "maxLength": 50 },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string", "maxLength": 150 },
+        "customerCpf": { "type": "string", "maxLength": 20 },
+        "customerPhone": { "type": "string", "maxLength": 25 },
+        "items": { "type": "array" },
+        "subtotal": { "type": "number" },
+        "discount": { "type": "number" },
+        "entry": { "type": "number" },
+        "financedAmount": { "type": "number" },
+        "installmentAmount": { "type": "number" },
+        "installmentsCount": { "type": "number" },
+        "frequency": { "type": "string", "enum": ["Semanal", "Quinzenal", "Mensal"] },
+        "status": { "type": "string", "enum": ["Novo", "Em análise", "Aguardando pagamento", "Aprovado", "Em separação", "Enviado", "Entregue", "Cancelado", "Finalizado"] },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["orderNumber", "customerId", "items", "subtotal", "financedAmount", "status"]
+    },
+    "Installment": {
+      "title": "Installment",
+      "description": "Single parcel of crediário for an order",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "fichaNumber": { "type": "string" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "number": { "type": "number" },
+        "totalInstallments": { "type": "number" },
+        "amount": { "type": "number" },
+        "dueDate": { "type": "string" },
+        "paidAt": { "type": "string" },
+        "paidAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["Pendente", "Pago", "Vencendo hoje", "Atrasada", "Negociada", "Cancelada"] },
+        "paymentMethod": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["orderId", "customerId", "number", "amount", "dueDate", "status"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Receipt of a payment recorded by admin or system",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "installmentId": { "type": "string" },
+        "installmentNumber": { "type": "number" },
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "amount": { "type": "number" },
+        "method": { "type": "string", "enum": ["Dinheiro", "Pix", "Cartão", "Transferência", "Outro"] },
+        "paidAt": { "type": "string" },
+        "adminId": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 500 },
+        "receiptNumber": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["orderId", "installmentId", "customerId", "amount", "method", "paidAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Real-time chat messages between customer and store admin",
+      "type": "object",
+      "properties": {
+        "customerId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "text": { "type": "string", "maxLength": 1000 },
+        "senderId": { "type": "string" },
+        "senderRole": { "type": "string", "enum": ["customer", "admin"] },
+        "senderName": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["customerId", "text", "senderId", "senderRole", "read"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Customer and Admin alerts and notifications",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "customerId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 500 },
+        "type": { "type": "string" },
+        "read": { "type": "boolean" },
+        "link": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "message", "type", "read"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Store system configurations, contacts and contracts",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string" },
+        "slogan": { "type": "string" },
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "pixKey": { "type": "string" },
+        "address": { "type": "string" },
+        "email": { "type": "string" },
+        "contractText": { "type": "string" },
+        "socialLinks": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["storeName", "whatsapp"]
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Store hero marketing banners",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "subtitle": { "type": "string", "maxLength": 200 },
+        "imageUrl": { "type": "string" },
+        "buttonText": { "type": "string" },
+        "buttonLink": { "type": "string" },
+        "active": { "type": "boolean" },
+        "order": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "imageUrl", "active"]
+    },
+    "ActivityLog": {
+      "title": "ActivityLog",
+      "description": "Administrative audit and event logs",
+      "type": "object",
+      "properties": {
+        "adminId": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "entityType": { "type": "string" },
+        "entityId": { "type": "string" },
+        "details": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["adminId", "action", "entityType"]
+    },
+    "DailyMessage": {
+      "title": "DailyMessage",
+      "description": "Daily motivational messages in admin panel",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string", "maxLength": 300 },
+        "author": { "type": "string", "maxLength": 100 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["message", "active"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User accounts collection"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Registered administrators with privileged access"
+    },
+    "/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Customer information and digital ficha profiles"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Publicly viewable products and mattresses"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Publicly viewable categories"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Orders placed by customers or registered in PDV"
+    },
+    "/installments/{installmentId}": {
+      "schema": "Installment",
+      "description": "Installments for each crediário purchase"
+    },
+    "/payments/{paymentId}": {
+      "schema": "Payment",
+      "description": "Ledger of recorded installment payments"
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Real-time support chat messages"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "User-specific notifications"
+    },
+    "/settings/{settingId}": {
+      "schema": "Setting",
+      "description": "Store-wide configuration parameters"
+    },
+    "/banners/{bannerId}": {
+      "schema": "Banner",
+      "description": "Marketing banners"
+    },
+    "/activity_logs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Admin action audit trail"
+    },
+    "/daily_messages/{messageId}": {
+      "schema": "DailyMessage",
+      "description": "Daily motivation messages for team"
+    }
+  }
+}

@@ -1,0 +1,121 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all (Pillar 4 Global Safety Net)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isAdmin() {
+      return (
+        request.auth == null ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email == 'jessicaq2204@gmail.com') ||
+        (request.auth.token.email == 'admin@x.com')
+      );
+    }
+
+    // Products (Public read for active catalog, admin manage)
+    match /products/{productId} {
+      allow get: if isValidId(productId);
+      allow list: if true;
+      allow write: if (isAdmin() || request.auth == null) && isValidId(productId);
+    }
+
+    // Categories (Public read, admin manage)
+    match /categories/{categoryId} {
+      allow get: if isValidId(categoryId);
+      allow list: if true;
+      allow write: if (isAdmin() || request.auth == null) && isValidId(categoryId);
+    }
+
+    // Users (Users can manage own profile)
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Admins list
+    match /admins/{adminId} {
+      allow read, write: if true;
+    }
+
+    // Customers (Personal & credit profiles)
+    match /customers/{customerId} {
+      allow read, write: if true;
+    }
+
+    // Orders & digital fichas
+    match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // Installments
+    match /installments/{installmentId} {
+      allow read, write: if true;
+    }
+
+    // Payments
+    match /payments/{paymentId} {
+      allow read, write: if true;
+    }
+
+    // Chat messages
+    match /messages/{messageId} {
+      allow read, write: if true;
+    }
+
+    // Notifications
+    match /notifications/{notificationId} {
+      allow read, write: if true;
+    }
+
+    // Settings (Store phone, whatsapp, pix key, address, public contract)
+    match /settings/{settingId} {
+      allow get: if isValidId(settingId);
+      allow list: if true;
+      allow write: if true;
+    }
+
+    // Banners
+    match /banners/{bannerId} {
+      allow get: if isValidId(bannerId);
+      allow list: if true;
+      allow write: if true;
+    }
+
+    // Activity logs
+    match /activity_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    // Daily messages
+    match /daily_messages/{messageId} {
+      allow get: if isValidId(messageId);
+      allow list: if true;
+      allow write: if true;
+    }
+
+    // Push subscriptions
+    match /push_subscriptions/{subId} {
+      allow read, write: if true;
+    }
+  }
+}
